@@ -4,7 +4,7 @@ error_reporting(0);
 function getGoogleClient(){
     $querys = array(
             'client_id' => '597196954214-9i894m5mhnvdbic34h05bfr0bhff5oqe.apps.googleusercontent.com',
-            'redirect_uri' => 'https://ssotest.demo.labs.mobingi.com/dashboard.php',
+            'redirect_uri' => 'https://ssotest.demo.labs.mobingi.com/oauth2callback.php',
             'scope' => 'https://www.googleapis.com/auth/userinfo.profile',
             'response_type' => 'code',
     );
