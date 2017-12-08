@@ -1,8 +1,6 @@
 <?php
 error_reporting(0);
 
-var_dump($REQUEST['code']);
-
 private function getGoogleAuthToken($code) {
     $baseURL = 'https://accounts.google.com/o/oauth2/token';
     $params = array(
@@ -33,4 +31,4 @@ private function getGoogleAuthToken($code) {
 }
 
 
-?>
+echo getGoogleAuthToken($_GET["code"]); 
