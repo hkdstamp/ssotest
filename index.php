@@ -1,9 +1,3 @@
-<?php
-error_reporting(0);
-phpinfo();
-</?php>
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,3 +8,6 @@ phpinfo();
 testtest
 </body>
 </html>
+
+<?php
+error_reporting(0);
