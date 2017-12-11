@@ -1,28 +1,37 @@
 <?php
-error_reporting(0);
 
-function getGoogleClient(){
-    $querys = array(
-            'client_id' => '597196954214-9i894m5mhnvdbic34h05bfr0bhff5oqe.apps.googleusercontent.com',
-            'redirect_uri' => 'https://ssotest.demo.labs.mobingi.com/oauth2callback.php',
-            'scope' => 'https://www.googleapis.com/auth/userinfo.profile',
-            'response_type' => 'code',
-    );
+$provider = require __DIR__ . '/provider.php';
 
-    return 'https://accounts.google.com/o/oauth2/auth?' . http_build_query($querys);
+if (!empty($_GET['error'])) {
 
+    // Got an error, probably user denied access
+    exit('Got error: ' . htmlspecialchars($_GET['error'], ENT_QUOTES, 'UTF-8'));
+
+} elseif (empty($_GET['code'])) {
+
+    // If we don't have an authorization code then get one
+    // option is always prompt ['approval_prompt' => 'force']
+    $authUrl = $provider->getAuthorizationUrl(['approval_prompt' => 'force']);
+//var_dump($authUrl);exit;
+    $_SESSION['oauth2state'] = $provider->getState();
+    header('Location: ' . $authUrl);
+    exit;
+
+} elseif (empty($_GET['state']) || ($_GET['state'] !== $_SESSION['oauth2state'])) {
+
+    // State is invalid, possible CSRF attack in progress
+    unset($_SESSION['oauth2state']);
+    exit('Invalid state');
+
+} else {
+
+    // Try to get an access token (using the authorization code grant)
+    $token = $provider->getAccessToken('authorization_code', [
+        'code' => $_GET['code']
+    ]);
+
+    $_SESSION['token'] = serialize($token);
+
+    // Optional: Now you have a token you can look up a users profile data
+    header('Location: /user.php');
 }
-
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="google-site-verification" content="HYpeXXGI1lNOhc5FIebGRetpP-nxjE7wqYH-6l4Wle4" />
-</head>
-
-<body>
-testtest
-<a href="<?php echo getGoogleClient(); ?>">google login</a>
-</body>
-</html>

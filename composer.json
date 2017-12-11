@@ -1,0 +1,13 @@
+{
+    "name": "test",
+    "license": "MIT",
+    "require": {
+        "google/apiclient": "2.*",
+        "league/oauth2-google" : "2.*"
+
+    },
+    "autoload": {
+    },
+    "require-dev": {
+    }
+}
